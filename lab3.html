@@ -17,14 +17,20 @@
 		document.getElementById("drop_zone").addEventListener("drop", function(e) {
 			e.stopPropagation();
 			e.preventDefault();
-			console.log(e, e.dataTransfer, e.dataTransfer.files, e.dataTransfer.files[0]);
-			Array.from(e.dataTransfer.files).forEach((file) => {
-				const reader = new FileReader;
-				reader.onload = function(e) {
-					console.log(e.target.result)
+			console.debug(e.dataTransfer.files);
+			var files = Array.from(e.dataTransfer.files);
+			files = files.map((file) => new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					resolve({name: file.name, body: e.target.result});
 				};
+				reader.onerror = (e) => {
+					reject({event: e});
+				}
 				reader.readAsText(file)
-			});
+			}));
+			console.debug(files);
+			Promise.all(files).then((x) => console.debug(x));
 		});
 	</script>
 </body>
