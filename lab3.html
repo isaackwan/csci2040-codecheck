@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script src="lib/brython.js"></script>
+	<script src="lib/brython_stdlib.js"></script>
+</head>
+<body onload="brython()">
+	<script type="text/python" src="py3/lab3.py"></script>
+	<input id="zone"><button id="mybutton">click !</button>
+	<div id="drop_zone" style="background-color: grey; min-height: 3em;">Hello!</div>
+	<script type="text/javascript">
+		document.getElementById("drop_zone").addEventListener("dragover", function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			e.dataTransfer.dropEffect = "copy";
+		});
+		document.getElementById("drop_zone").addEventListener("drop", function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			console.log(e, e.dataTransfer, e.dataTransfer.files, e.dataTransfer.files[0]);
+			Array.from(e.dataTransfer.files).forEach((file) => {
+				const reader = new FileReader;
+				reader.onload = function(e) {
+					console.log(e.target.result)
+				};
+				reader.readAsText(file)
+			});
+		});
+	</script>
+</body>
+</html>
