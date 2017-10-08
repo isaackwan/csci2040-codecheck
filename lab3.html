@@ -4,10 +4,10 @@
 	<script src="lib/brython.js"></script>
 	<script src="lib/brython_stdlib.js"></script>
 </head>
-<body onload="brython()">
+<body onload="brython(1)">
 	<script type="text/python" src="py3/lab3.py"></script>
-	<input id="zone"><button id="mybutton">click !</button>
 	<div id="drop_zone" style="background-color: grey; min-height: 3em;">Hello!</div>
+	<div id="result" style="margin-top: 3em;white-space: pre-line;">Result goes here...</div>
 	<script type="text/javascript">
 		document.getElementById("drop_zone").addEventListener("dragover", function(e){
 			e.stopPropagation();
@@ -21,8 +21,9 @@
 			var files = Array.from(e.dataTransfer.files);
 			files = files.map((file) => new Promise((resolve, reject) => {
 				const reader = new FileReader();
-				reader.onload = (e) => {
-					resolve({name: file.name, body: e.target.result});
+				reader.onload = (ev) => {
+					e.target.dispatchEvent(new CustomEvent("upload", {detail: {name: file.name, body: ev.target.result}}));
+					resolve({name: file.name, body: ev.target.result});
 				};
 				reader.onerror = (e) => {
 					reject({event: e});
@@ -30,7 +31,11 @@
 				reader.readAsText(file)
 			}));
 			console.debug(files);
-			Promise.all(files).then((x) => console.debug(x));
+			Promise.all(files)
+				.then((files) => e.target.dispatchEvent(new CustomEvent("finishedUpload", {detail: files})))
+				.catch(e => {
+					document.getElementById("result").innerText += e;
+				});
 		});
 	</script>
 </body>
