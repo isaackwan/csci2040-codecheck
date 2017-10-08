@@ -7,7 +7,9 @@
 </head>
 <body onload="brython({cache: 'browser', debug: 1})">
 	<div id="drop_zone" style="background-color: grey; min-height: 3em;">Loading...</div>
-	<div id="result" style="margin-top: 3em;white-space: pre-wrap;">Result goes here...<br></div>
+	<div id="result" style="margin-top: 3em;white-space: pre-wrap;">Result goes here...
+
+</div>
 	<script type="text/javascript">
 		document.getElementById("drop_zone").addEventListener("dragover", function(e){
 			e.stopPropagation();
@@ -39,10 +41,28 @@
 		});
 	</script>
 	<script type="text/python">
-		from labs.Lab3 import Lab3
-
+		from labcheck.lab3 import Lab3
+		import sys
+		from browser import document
+		
 		lab = Lab3()
+
+		# setup stderr
+		def write(data):
+			document['result'].textContent += str(data)
+		
+		sys.stderr.write = write
+		
+		def handleUpload(event):
+			lab.upload(event.detail.name, event.detail.body)
+		
+		def handleFinishedUpload(event):
+			lab.finishedUpload()
+			document['drop_zone'].innerText = 'Retry? Please refresh this page before proceeding'
+		
+		document['drop_zone'].bind('upload', handleUpload)
+		document['drop_zone'].bind('finishedUpload', handleFinishedUpload)
+		document['drop_zone'].innerText = 'Ready, please drop your Python3 (.py) files here'
 	</script>
-	<script type="text/python" src="/py3/browser_bindings.py"></script>	
 </body>
 </html>
