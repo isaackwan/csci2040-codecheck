@@ -1,27 +1,23 @@
-from browser import document, alert, window
+from browser import document
 from unittest import TestCase, TextTestRunner, defaultTestLoader
 import sys
 
-class Lab3:
+class Lab3():
 	class _P1Test(TestCase):
-		def test_upper(self):
-			self.assertEqual('foo'.upper(), 'FOO')
+		def test_box_constructor_works(self):
+			pass
 
-		def test_isupper(self):
-			self.assertTrue('FOO'.isupper())
-			self.assertFalse('Foo'.isupper())
-
-	def __init__(self):
-		super().__init__()
+		def test_lt_method(self):
+			self.assertTrue(3 < 2)
 
 	def upload(self, name, content):
 		exec(content)
 
 	def finishedUpload(self):
-		window.console.log('finished upload')
+		print('finished upload')
 		suite = defaultTestLoader.loadTestsFromTestCase(Lab3._P1Test)
 		TextTestRunner().run(suite)
-		window.console.log('finished running test suite')
+		print('finished running test suite')
 
 # setup stderr
 def write(data):
@@ -36,6 +32,7 @@ def handleUpload(event):
 
 def handleFinishedUpload(event):
 	lab3.finishedUpload()
+	document['drop_zone'].innerText = 'Retry? Please refresh this page before proceeding'
 
 document['drop_zone'].bind('upload', handleUpload)
 document['drop_zone'].bind('finishedUpload', handleFinishedUpload)
