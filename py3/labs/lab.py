@@ -1,8 +1,8 @@
 from abc import ABCMeta
 
-class InBrowserTest(metaclass=ABCMeta):
+class Lab(metaclass=ABCMeta):
 	"""
-	BrowserTest is the interface for each testing class. Usually one "lab" have two testing classes, one for Python 2 & one for Python 3.
+	Lab is the interface for each testing class.
 
 	For performance reasons, however, implementations of this interface will not inherit this class directly.
 	"""
