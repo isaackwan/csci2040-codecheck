@@ -1,12 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<script src="http://cdn.jsdelivr.net/gh/brython-dev/brython@stable/www/src/brython.js"></script>
+	<script src="//cdn.rawgit.com/brython-dev/brython/3.3.4/www/src/brython.js"></script>
+	<script src="//cdn.rawgit.com/brython-dev/brython/3.3.4/www/src/brython_stdlib.js"></script>
 </head>
-<body onload="brython(1)">
+<body onload="brython({cache: 'browser', debug: 1})">
 	<script type="text/python" src="py3/lab3.py"></script>
-	<div id="drop_zone" style="background-color: grey; min-height: 3em;">Hello!</div>
-	<div id="result" style="margin-top: 3em;white-space: pre-line;">Result goes here...</div>
+	<div id="drop_zone" style="background-color: grey; min-height: 3em;">Loading...</div>
+	<div id="result" style="margin-top: 3em;white-space: pre-wrap;">Result goes here...<br></div>
 	<script type="text/javascript">
 		document.getElementById("drop_zone").addEventListener("dragover", function(e){
 			e.stopPropagation();

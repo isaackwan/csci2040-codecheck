@@ -1,16 +1,16 @@
 from browser import document, alert, window
-from unittest import TestCase, main
-
-class Lab3Test(TestCase):
-	def test_upper(self):
-		self.assertEqual('foo'.upper(), 'FOO')
-		self.assertEqual('foo'.upper(), 'FO2O')
-
-	def test_isupper(self):
-		self.assertTrue('FOO'.isupper())
-		self.assertFalse('Foo'.isupper())
+from unittest import TestCase, TextTestRunner, defaultTestLoader
+import sys
 
 class Lab3:
+	class _P1Test(TestCase):
+		def test_upper(self):
+			self.assertEqual('foo'.upper(), 'FOO')
+
+		def test_isupper(self):
+			self.assertTrue('FOO'.isupper())
+			self.assertFalse('Foo'.isupper())
+
 	def __init__(self):
 		super().__init__()
 
@@ -18,12 +18,16 @@ class Lab3:
 		exec(content)
 
 	def finishedUpload(self):
-		alert('finished upload')
-		result = Lab3Test()
-		window.console.log(result)
-		main()
-		print(result)
-		alert('run')
+		window.console.log('finished upload')
+		suite = defaultTestLoader.loadTestsFromTestCase(Lab3._P1Test)
+		TextTestRunner().run(suite)
+		window.console.log('finished running test suite')
+
+# setup stderr
+def write(data):
+    document['result'].innerText += str(data)
+
+sys.stderr.write = write
 
 lab3 = Lab3()
 
@@ -35,3 +39,4 @@ def handleFinishedUpload(event):
 
 document['drop_zone'].bind('upload', handleUpload)
 document['drop_zone'].bind('finishedUpload', handleFinishedUpload)
+document['drop_zone'].innerText = 'Ready, please drop your Python3 (.py) files here'
